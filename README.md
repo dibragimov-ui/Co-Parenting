@@ -19,15 +19,9 @@ Code map: `src/lib/domain` holds the pure schedule logic (timeline edits, splitt
 
 ### 1. Database
 
-Create a free Postgres database on [Neon](https://neon.tech) or [Supabase](https://supabase.com), then apply the migrations:
+The easiest route is inside Vercel: open your project, go to **Storage > Create Database > Neon**, and connect it. Vercel then sets `DATABASE_URL` for you. You can also create a project at [neon.tech](https://neon.tech) and paste its connection string into Vercel as `DATABASE_URL`.
 
-```bash
-cp .env.example .env.local   # fill in DATABASE_URL first
-npm install
-DATABASE_URL=... npm run db:migrate
-```
-
-The migrations enable `btree_gist` so the database itself refuses overlapping custody periods.
+There is nothing to run by hand: every build applies the database migrations first (`scripts/migrate.mjs`). They enable `btree_gist` so the database itself refuses overlapping custody periods. To set up a database from your own machine instead, run `DATABASE_URL=... npm run db:migrate`.
 
 ### 2. Google Cloud project
 
