@@ -3,8 +3,9 @@ import { createCipheriv, createDecipheriv, randomBytes } from "node:crypto";
 function key(): Buffer {
   const raw = process.env.TOKEN_ENCRYPTION_KEY;
   if (!raw) throw new Error("TOKEN_ENCRYPTION_KEY is not set");
-  const k = Buffer.from(raw, "base64");
-  if (k.length !== 32) throw new Error("TOKEN_ENCRYPTION_KEY must be 32 bytes, base64 encoded");
+  // 32 random bytes, as 64 hex characters or base64.
+  const k = /^[0-9a-fA-F]{64}$/.test(raw) ? Buffer.from(raw, "hex") : Buffer.from(raw, "base64");
+  if (k.length !== 32) throw new Error("TOKEN_ENCRYPTION_KEY must be 32 random bytes (64 hex characters or base64)");
   return k;
 }
 

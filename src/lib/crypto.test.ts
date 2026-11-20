@@ -14,3 +14,8 @@ it("round-trips and detects tampering", () => {
   buf[buf.length - 1] ^= 1;
   expect(() => decrypt(buf.toString("base64"))).toThrow();
 });
+
+it("accepts a 64-character hex key", () => {
+  process.env.TOKEN_ENCRYPTION_KEY = randomBytes(32).toString("hex");
+  expect(decrypt(encrypt("x"))).toBe("x");
+});
